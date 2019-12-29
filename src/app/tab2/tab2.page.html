@@ -1,9 +1,42 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab Two
+      Apple Healthkit
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  today: {{today}}
+  tomorrow: {{tomorrow}}
+  midnight today: {{midnightToday}}
+  midnight tomorrow: {{midnightTomorrow}}
+  <p>Authorized:</p>
+  <p>{{authorized}}</p>
+  <p>Available:</p>
+  <p>{{available}}</p>
+  <p>Height:</p>
+  <p>{{height}}</p>
+  <p>Weight:</p>
+  <p>{{weight}}</p>
+  <p>DOB:</p>
+  <p>{{DOB}}</p>
+  <p>Step count:</p>
+  <p>{{stepCount}}</p>
+  <p>Sleep analysis</p>
+  <p>{{sleepAnalysis}}</p>
 
-<ion-content></ion-content>
+  <ion-button (click)="isAvailable()" color="dark">Check healthkit availability</ion-button>
+  <ion-button (click)="isAuthorized()" color="dark">Check if access authorized</ion-button>
+  <ion-button (click)="grantAccess()" color="dark">Request auth</ion-button>
+  {{access}}
+  <ion-button (click)="getHeight()" color="dark">Get height</ion-button>
+  <ion-button (click)="getWeight()" color="dark">Get weight</ion-button>
+  <ion-button (click)="getDOB()" color="dark">Get age</ion-button>
+  <ion-button (click)="querySampleTypeAggregated()" color="dark">Get step count</ion-button>
+  <ion-button (click)="getSleepAnalysis()" color="dark">Get sleep analysis</ion-button>
+  calories resp: {{calories}}
+  <ion-button (click)="saveKCAL()" color="dark">test input calories</ion-button>
+
+
+
+</ion-content>
