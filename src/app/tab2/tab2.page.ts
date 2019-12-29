@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { HealthkitService } from '../services/healthkit.service';
+import { DateUtilsService } from '../services/date-utils.service';
+import { GenericResponse, StepCountResponse } from '../interfaces/healthkit';
 
 @Component({
   selector: 'app-tab2',
@@ -6,7 +9,86 @@ import { Component } from '@angular/core';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  height;
+  weight;
+  DOB: Date;
+  available: boolean;
+  authorized: string;
+  access;
+  stepCount;
+  sleepAnalysis;
+  today;
+  tomorrow;
+  midnightToday;
+  midnightTomorrow;
+  calories;
+  constructor(private healthkitService: HealthkitService, private dateUtils: DateUtilsService) {
+    this.setDates();
+  }
 
-  constructor() {}
+  setDates() {
+    this.midnightToday = this.dateUtils.midnightToday;
+    this.midnightTomorrow = this.dateUtils.midnightTomorrow;
+    this.today = this.dateUtils.today;
+    this.tomorrow = this.dateUtils.tomorrow;
+  }
+
+  grantAccess() {
+    this.healthkitService.requestAuthorization().then(resp => this.access = resp);
+  }
+
+  isAvailable() {
+    this.healthkitService.isAvailable().then(resp => this.available = resp);
+  }
+
+  isAuthorized() {
+    this.healthkitService.isAuthorized().then(resp => this.authorized = resp);
+  }
+
+  getHeight() {
+    this.healthkitService.getHeight().then((resp: GenericResponse) => this.height = resp);
+  }
+
+  getWeight() {
+    this.healthkitService.getWeight().then((weight: GenericResponse) => this.weight = JSON.stringify(weight));
+  }
+
+  getDOB() {
+    this.healthkitService.getDOB().then(DOB => this.DOB = DOB);
+  }
+
+  querySampleTypeAggregated() {
+    this.healthkitService.querySampleTypeAggregated(
+      {
+        'startDate': new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        'endDate': new Date(), // now
+        'aggregation': 'day', // 'hour', 'week', 'year' or 'day', default 'day'
+        'sampleType': 'HKQuantityTypeIdentifierStepCount', // any HKQuantityType
+        'unit': 'count' // make sure this is compatible with the sampleType
+      }
+    ).then((resp: StepCountResponse) => this.stepCount = JSON.stringify(resp));
+  }
+
+  getSleepAnalysis() {
+    this.healthkitService.querySampleType(
+      {
+        'startDate': new Date(), // three days ago
+        'endDate': new Date(), // now
+        'sampleType': 'HKCategoryTypeIdentifierSleepAnalysis',
+      }
+    ).then(resp => this.sleepAnalysis = resp);
+  }
+
+  saveKCAL() {
+    this.healthkitService.saveQuantityKCAL(
+      {
+        'startDate': new Date(), // now
+        'endDate': new Date(), // now
+        'sampleType': 'HKQuantityTypeIdentifierDietaryEnergyConsumed', // make sure you request write access beforehand
+        'unit': 'kcal',
+        'amount': 64
+      }
+    ).then(resp => this.calories = resp);
+  }
 
 }
