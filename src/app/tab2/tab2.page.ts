@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HealthkitService } from '../services/healthkit.service';
 import { DateUtilsService } from '../services/date-utils.service';
-import { GenericResponse, StepCountResponse } from '../interfaces/healthkit';
+import { GenericResponse, StepCountResponse, HealthkitCard } from '../interfaces/healthkit';
 
 @Component({
   selector: 'app-tab2',
@@ -22,8 +22,30 @@ export class Tab2Page {
   midnightToday;
   midnightTomorrow;
   calories;
+  ionCards: Array<HealthkitCard> = [];
+
   constructor(private healthkitService: HealthkitService, private dateUtils: DateUtilsService) {
     this.setDates();
+    this.setCard();
+  }
+
+  setCard() {
+    this.ionCards  = [
+      {
+        title: 'title',
+        subtitle: 'sub',
+        type: 'type',
+        value: 'value',
+        permissions: { read: true, write: true }
+      },
+      {
+        title: 'title',
+        subtitle: 'sub',
+        type: 'type',
+        value: 'value',
+        permissions: { read: true, write: true }
+      }
+    ];
   }
 
   setDates() {

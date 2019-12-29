@@ -6,11 +6,18 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  today: {{today}}
+  <ion-list>
+    <ion-item>
+      <app-card *ngFor="let card of ionCards" [card]="card"></app-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- today: {{today}}
   tomorrow: {{tomorrow}}
   midnight today: {{midnightToday}}
-  midnight tomorrow: {{midnightTomorrow}}
-  <p>Authorized:</p>
+  midnight tomorrow: {{midnightTomorrow}} -->
+<!-- <p>Authorized:</p>
   <p>{{authorized}}</p>
   <p>Available:</p>
   <p>{{available}}</p>
@@ -34,9 +41,6 @@
   <ion-button (click)="getDOB()" color="dark">Get age</ion-button>
   <ion-button (click)="querySampleTypeAggregated()" color="dark">Get step count</ion-button>
   <ion-button (click)="getSleepAnalysis()" color="dark">Get sleep analysis</ion-button>
-  calories resp: {{calories}}
-  <ion-button (click)="saveKCAL()" color="dark">test input calories</ion-button>
 
-
-
-</ion-content>
+  <!-- calories resp: {{calories}} -->
+<!-- <ion-button (click)="saveKCAL()" color="dark">test input calories</ion-button> -->
