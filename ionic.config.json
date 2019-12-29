@@ -1,5 +1,7 @@
 {
   "name": "food-tracker",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
