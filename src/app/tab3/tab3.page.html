@@ -7,8 +7,6 @@
 </ion-header>
 
 <ion-content>
-
-  <!-- Item Dividers in a List -->
   <ion-list>
     <ng-container *ngFor="let item of ionItems">
       <ion-item-divider>
@@ -16,7 +14,6 @@
           {{item.title}}
         </ion-label>
       </ion-item-divider>
-
       <ion-item>
         <ion-label>Read:</ion-label>
         <ion-toggle (ionChange)="toggleItem(item)" [(ngModel)]=item.permissions.read></ion-toggle>
@@ -26,9 +23,6 @@
         <ion-toggle (ionChange)="toggleItem(item)" [(ngModel)]=item.permissions.write></ion-toggle>
       </ion-item>
     </ng-container>
-
-
   </ion-list>
-
-
+  <ion-button (click)="clearAllSettings()" color="danger" expand="full">Clear all permissions</ion-button>
 </ion-content>
