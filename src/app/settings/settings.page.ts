@@ -3,11 +3,11 @@ import { HKTypes } from '../interfaces/healthkit';
 import { StorageService } from '../services/storage.service';
 import { ToastService } from '../services/toast.service';
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+  selector: 'app-settings-tab',
+  templateUrl: 'settings.page.html',
+  styleUrls: ['settings.page.scss']
 })
-export class Tab3Page {
+export class SettingsPage {
 
   defaultItems = [];
   ionItems = [];
@@ -32,7 +32,6 @@ export class Tab3Page {
         });
       return updated;
     });
-    console.log(this.ionItems);
   }
 
   isUndefinedOrNull(value) {
@@ -55,7 +54,8 @@ export class Tab3Page {
   }
 
   toggleItem(item) {
-    this.storageService.updatePermision(item.type, item.permissions)
+    console.log(item.type);
+    this.storageService.updatePermision(item.type, { permissions: item.permissions, title: item.title })
       .then(() => this.toastService.showToast(`Changes saved to ${item.title}`));
   }
 
