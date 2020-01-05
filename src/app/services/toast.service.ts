@@ -16,25 +16,21 @@ export class ToastService {
     toast.present();
   }
 
-  async showToastWithOptions(buttonConfig, doneConfig: DoneConfig) {
+  async showToastWithOptions(header, message, position, buttonConfig, doneConfig: DoneConfig) {
     const toast = await this.toastController.create({
-      header: 'Toast header',
-      message: 'Click to Close',
-      position: 'top',
+      header,
+      message,
+      position,
       buttons: [
         {
           side: buttonConfig.side,
           icon: buttonConfig.icon,
           text: buttonConfig.text,
-          handler: () => {
-            console.log('Favorite clicked');
-          }
+          handler: () => buttonConfig.handler()
         }, {
           text: doneConfig.text,
           role: doneConfig.role,
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+          handler: () => doneConfig.handler()
         }
       ]
     });
