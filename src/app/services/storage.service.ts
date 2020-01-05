@@ -1,32 +1,50 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { Injectable } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { Observable, from, BehaviorSubject } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class StorageService {
-
-  constructor(private storage: Storage) { }
-
-  permissions = [];
-
-  getAllPermissions() {
-    this.storage.forEach((value, key, index) => {
-      this.permissions.push({key: key, value: value});
-    });
-    return this.permissions;
+  constructor(private storage: Storage) {
+    this.getAllPermissions();
   }
 
-  updatePermision(key, value) {
-    return this.storage.set(key, value);
+  private _permissions: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  public readonly permissions: Observable<
+    any
+  > = this._permissions.asObservable();
+
+  getAllPermissions(): Promise<any> {
+    return this.storage.forEach((value, key) => {
+      let item = { key, value };
+      this._permissions.next([...this._permissions.getValue(), item]);
+    });
+  }
+
+  removeDuplicates(permissions: [], item) {
+    if (permissions.length > 0) {
+      return permissions.filter((val: any) => {
+        if (val.key === item.key) {
+          val.value.permissions = item.value.permissions;
+          return val;
+        } else return val;
+      });
+    } else return [item];
+  }
+
+  async updatePermision(key, value) {
+    await this.storage.set(key, value);
+    let item = { key, value };
+    this._permissions.next([...this._permissions.getValue(), item]);
   }
 
   getPermission(key: string) {
     return this.storage.get(key);
   }
 
-  clearPermission(key: string) {
-    return this.storage.remove(key);
+  async clearAll() {
+    await this.storage.clear();
+    this._permissions.next([]);
   }
-
 }
